@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package proto.user.v1;
+
+
+// The UserService handles identity-related actions for internal service communication.
+service UserService {
+  // Updates the current plan associated with a user.
+  //
+  // Typically called by the PlanService when a user subscribes to,
+  // upgrades, or cancels a plan.
+  rpc UpdateUserPlan(UpdateUserPlanRequest) returns (UpdateUserPlanResponse);
+}
+
+
+// Request message for updating a user's plan.
+message UpdateUserPlanRequest {
+
+  string auth0_id = 1;   // Auth0 user ID fallback
+
+  // The ID of the new plan the user is being associated with.
+  string plan_id = 2;
+
+  // The timestamp when the update was initiated or processed.
+  string updated_at = 3;
+}
+
+
+// Response message for the UpdateUserPlan RPC.
+message UpdateUserPlanResponse {
+  // Whether the update was successful.
+  bool success = 1;
+
+  // Optional error message if the update failed.
+  string error_message = 2;
+
+  // Optional error code (e.g. 404 for not found, 500 for internal error).
+  int32 code = 3;
+}
