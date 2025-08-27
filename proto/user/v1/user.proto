@@ -10,6 +10,9 @@ service UserService {
   // Typically called by the PlanService when a user subscribes to,
   // upgrades, or cancels a plan.
   rpc UpdateUserPlan(UpdateUserPlanRequest) returns (UpdateUserPlanResponse);
+  rpc GetUserDetailsFromSession(GetUserDetailsFromSessionRequest) returns (GetUserDetailsFromSessionResponse);
+  rpc GetUserSettings(GetUserSettingsRequest) returns (GetUserSettingsResponse);
+
 }
 
 
@@ -32,8 +35,43 @@ message UpdateUserPlanResponse {
   bool success = 1;
 
   // Optional error message if the update failed.
-  string error_message = 2;
+  optional string error_message = 2;
 
   // Optional error code (e.g. 404 for not found, 500 for internal error).
   int32 code = 3;
+}
+
+message GetUserDetailsFromSessionRequest {
+  string session_id = 1;
+}
+
+message GetUserDetailsFromSessionResponse {
+  bool success = 1;
+
+  optional string auth0_id = 2;
+
+  optional string role = 3;
+
+  repeated string permissions = 4;
+
+  optional string error_message = 5;
+
+  int32 code = 6;
+
+  
+
+}
+
+message GetUserSettingsRequest {
+  string auth0_id = 1;
+}
+
+message GetUserSettingsResponse {
+  bool success = 1;
+  
+  map<string, string> settings = 2;
+  optional string error_message = 3;
+  int32 code = 4;
+  
+
 }

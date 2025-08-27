@@ -2,7 +2,13 @@ version: v1
 
 lint:
   use:
-    - STANDARD
+    - STANDARD  # Includes STANDARD but more thorough
+  # except:
+  #   - PACKAGE_VERSION_SUFFIX  # Optional if you're not using v1 suffixes
+  # ignore_only:
+  #   RPC_NO_REQUEST_STANDARD_NAME:
+  #     - proto/user/v1/user.proto
+
 breaking:
   use:
-    - FILE
+    - WIRE  # Stronger than FILE – detects field renames/removals
