@@ -4,9 +4,9 @@ This repository contains all the shared gRPC protocol buffer (`.proto`) definiti
 
 ## Purpose
 
-* Define service contracts and message schemas in a language-agnostic format
-* Enable consistent and strongly typed communication via gRPC across services
-* Support code generation for client and server implementations in multiple languages (e.g., TypeScript, Go, Python)
+- Define service contracts and message schemas in a language-agnostic format
+- Enable consistent and strongly typed communication via gRPC across services
+- Support code generation for client and server implementations in multiple languages (e.g., TypeScript, Go, Python)
 
 ## Structure
 
@@ -33,16 +33,7 @@ Each microservice pulls proto files from this repo (e.g., via git submodule or C
 From within the service that consumes these protos:
 
 ```bash
-PROTO_DIR=../pennywise-proto/proto
-
-npx protoc \
-  --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts \
-  --plugin=protoc-gen-grpc=./node_modules/.bin/grpc_tools_node_protoc_plugin \
-  --js_out=import_style=commonjs,binary:./generated \
-  --grpc_out=grpc_js:./generated \
-  --ts_out=grpc_js:./generated \
-  -I $PROTO_DIR \
-  $PROTO_DIR/user/user.proto
+buf generate $ROOT_PATH_TO_PROTO_DEFINITION_FILE
 ```
 
 ### For Go or Python
@@ -83,10 +74,10 @@ message ValidateTokenResponse {
 
 ## Best Practices
 
-* Group proto files by domain (`user/`, `plan/`, etc.)
-* Use versioning if needed (e.g., `user/v1/user.proto`)
-* Keep message definitions flat and reusable across services
-* Define shared types in `common/` folder
+- Group proto files by domain (`user/`, `plan/`, etc.)
+- Use versioning if needed (e.g., `user/v1/user.proto`)
+- Keep message definitions flat and reusable across services
+- Define shared types in `common/` folder
 
 ## License
 

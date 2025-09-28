@@ -2,6 +2,16 @@ syntax = "proto3";
 
 package proto.user.v1;
 
+enum StatusCode {
+  STATUS_CODE_OK_UNSPECIFIED = 0;                   // gRPC best practice: start enums at 0
+  STATUS_CODE_REFRESHED = 1;
+  STATUS_CODE_SESSION_EXPIRED = 2;
+  STATUS_CODE_SESSION_NOT_FOUND = 3;
+  STATUS_CODE_SERVER_ERROR = 4;
+  STATUS_CODE_DATA_NOT_FOUND = 5;
+  STATUS_CODE_BAD_REQUEST = 6;
+  STATUS_CODE_UNAUTHORIZED = 7;
+}
 
 // The UserService handles identity-related actions for internal service communication.
 service UserService {
@@ -9,37 +19,12 @@ service UserService {
   //
   // Typically called by the PlanService when a user subscribes to,
   // upgrades, or cancels a plan.
-  rpc UpdateUserPlan(UpdateUserPlanRequest) returns (UpdateUserPlanResponse);
+  
   rpc GetUserDetailsFromSession(GetUserDetailsFromSessionRequest) returns (GetUserDetailsFromSessionResponse);
   rpc GetUserSettings(GetUserSettingsRequest) returns (GetUserSettingsResponse);
 
 }
 
-
-// Request message for updating a user's plan.
-message UpdateUserPlanRequest {
-
-  string auth0_id = 1;   // Auth0 user ID fallback
-
-  // The ID of the new plan the user is being associated with.
-  string plan_id = 2;
-
-  // The timestamp when the update was initiated or processed.
-  string updated_at = 3;
-}
-
-
-// Response message for the UpdateUserPlan RPC.
-message UpdateUserPlanResponse {
-  // Whether the update was successful.
-  bool success = 1;
-
-  // Optional error message if the update failed.
-  optional string error_message = 2;
-
-  // Optional error code (e.g. 404 for not found, 500 for internal error).
-  int32 code = 3;
-}
 
 message GetUserDetailsFromSessionRequest {
   string session_id = 1;
@@ -56,7 +41,7 @@ message GetUserDetailsFromSessionResponse {
 
   optional string error_message = 5;
 
-  int32 code = 6;
+  StatusCode code = 6;
 
   
 
@@ -71,7 +56,7 @@ message GetUserSettingsResponse {
   
   map<string, string> settings = 2;
   optional string error_message = 3;
-  int32 code = 4;
+  StatusCode code = 4;
   
 
 }
